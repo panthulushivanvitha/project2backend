@@ -1,5 +1,7 @@
 package com.niit.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ public UserController(){
 }
 @RequestMapping(value="/registeruser",method=RequestMethod.POST)
 public ResponseEntity<?> registerUser(@RequestBody User user){
-	System.out.println(user.toString());
+	System.out.println("registerUser in UserController"+user);
 	if(!userDao.isEmailUnique(user.getEmail())){
 		ErrorClass error=new ErrorClass(1,"Email already exists please type a new one");
 	return new ResponseEntity<ErrorClass>(error,HttpStatus.CONFLICT);
@@ -35,7 +37,7 @@ public ResponseEntity<?> registerUser(@RequestBody User user){
 		return new ResponseEntity<User>(user,HttpStatus.OK);
 }
 @RequestMapping(value="/login",method=RequestMethod.POST)
-public ResponseEntity<?> login(@RequestBody User user){
+public ResponseEntity<?> login(@RequestBody User user,HttpSession session){
 	System.out.println(user);
 	User validUser=userDao.login(user);
 	System.out.println(validUser);
@@ -44,7 +46,26 @@ public ResponseEntity<?> login(@RequestBody User user){
 	return new ResponseEntity<ErrorClass>(error,HttpStatus.UNAUTHORIZED);
 	}
 	else{
+		validUser.setOnline(true);
+		userDao.update(validUser);
+		session.setAttribute("loginId",user.getEmail());
 		return new ResponseEntity<User>(validUser,HttpStatus.OK);
 }
+}
+@RequestMapping(value="/logout",method=RequestMethod.PUT)
+public ResponseEntity<?> logout(HttpSession session){
+	String email=(String)session.getAttribute("loginId");
+	if(email==null){
+		ErrorClass error=new ErrorClass(4,"please login....");
+		return new ResponseEntity<ErrorClass>(error,HttpStatus.UNAUTHORIZED);
+	}
+	User user=userDao.getUser(email);
+	user.setOnline(false);
+	userDao.update(user);
+	session.removeAttribute("loginId");
+	session.invalidate();
+	return new ResponseEntity<User>(user,HttpStatus.OK);
+	
+	
 }
 }

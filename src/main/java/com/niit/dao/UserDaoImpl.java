@@ -41,5 +41,14 @@ private SessionFactory sessionFactory;
 		
 		return (User)query.uniqueResult();
 	}
+	public void update(User validUser){
+		Session session=sessionFactory.getCurrentSession();
+		session.update(validUser);
+	}
+	public User getUser(String email){
+		Session session=sessionFactory.getCurrentSession();
+		User user=(User)session.get(User.class,email);
+		return user;
+	}
 	
 }
