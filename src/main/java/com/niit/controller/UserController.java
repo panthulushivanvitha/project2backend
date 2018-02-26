@@ -66,6 +66,35 @@ public ResponseEntity<?> logout(HttpSession session){
 	session.invalidate();
 	return new ResponseEntity<User>(user,HttpStatus.OK);
 	
+}
+@RequestMapping(value="/getuser",method=RequestMethod.GET)
+public ResponseEntity<?> getUser(HttpSession session){
+	String email=(String)session.getAttribute("loginId");
+	if(email==null){
+		ErrorClass error=new ErrorClass(5,"unauthorized access....");
+		return new ResponseEntity<ErrorClass>(error,HttpStatus.UNAUTHORIZED);
+	}
+	User user=userDao.getUser(email);
+	return new ResponseEntity<User>(user,HttpStatus.OK);
+
+}
+@RequestMapping(value="/updateuser",method=RequestMethod.PUT)
+public ResponseEntity<?> updateUser(@RequestBody User user,HttpSession session){
+	String email=(String)session.getAttribute("loginId");
+	if(email==null){
+		ErrorClass error=new ErrorClass(5,"unauthorized access....");
+		return new ResponseEntity<ErrorClass>(error,HttpStatus.UNAUTHORIZED);
+	}
+	try{
+		userDao.update(user);
+		return new ResponseEntity<User>(user,HttpStatus.OK);
+	}
+	catch(Exception e){
+		ErrorClass error=new ErrorClass(5,"Unable to update user detailes..."+e.getMessage());
+		return new ResponseEntity<ErrorClass>(error,HttpStatus.INTERNAL_SERVER_ERROR);
+
+}
+
 	
 }
 }
