@@ -19,24 +19,21 @@ private SessionFactory  sessionFactory;
 public void addJob(Job job) {
 		Session session=sessionFactory.getCurrentSession();
 		session.save(job);
-		session.flush();
-		session.close();
 		
 		
 	}
 public List<Job> getAllJobs() 
 {
-	Session session=sessionFactory.openSession();
+	Session session=sessionFactory.getCurrentSession();
 	Query query=session.createQuery("from Job");
-	List<Job> jobs=query.list();
-	session.close();
-	return jobs;
+	return query.list();
+	
 }
 
 public Job getJobById(int id) {
-    Session session=sessionFactory.openSession();
+    Session session=sessionFactory.getCurrentSession();
     Job job=(Job)session.get(Job.class, id);
-    session.close();
+    
     return job;
 }
 
