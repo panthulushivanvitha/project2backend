@@ -9,7 +9,7 @@ public interface JobDao {
 
 	List<Job> getAllJobs();
 
-	Job getJobById(int id);
+	Job getJob(int id);
 	
 
 }

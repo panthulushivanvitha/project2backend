@@ -30,11 +30,13 @@ public List<Job> getAllJobs()
 	
 }
 
-public Job getJobById(int id) {
-    Session session=sessionFactory.getCurrentSession();
-    Job job=(Job)session.get(Job.class, id);
-    
-    return job;
+@Transactional
+public Job getJob(int id) {
+	 Session session=sessionFactory.openSession();
+        Job job=(Job)session.get(Job.class, id);
+        session.close();
+        return job;
 }
+
 
 }

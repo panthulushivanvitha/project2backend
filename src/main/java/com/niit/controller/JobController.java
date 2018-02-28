@@ -1,5 +1,6 @@
 package com.niit.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -40,6 +41,7 @@ public class JobController {
 			return new ResponseEntity<ErrorClass>(error,HttpStatus.UNAUTHORIZED);
 		}
 		try{
+			job.setPostedon(new Date());
 			jobDao.addJob(job);
 			return new ResponseEntity<Job>(job,HttpStatus.OK);
 		}
@@ -63,14 +65,14 @@ public class JobController {
 	}
 	
 
-@RequestMapping(value="/getjobbyid/{id}",method=RequestMethod.GET)
-public ResponseEntity<?> getJobById(@PathVariable int id,HttpSession session){
+@RequestMapping(value="/getjob/{id}",method=RequestMethod.GET)
+public ResponseEntity<?> getJob(@PathVariable int id,HttpSession session){
     String email=(String)session.getAttribute("loginId");
     if(email==null){
          ErrorClass error=new ErrorClass(4,"UnAuthorized user");
             return new ResponseEntity<ErrorClass>(error,HttpStatus.UNAUTHORIZED);
     }
-    Job job=jobDao.getJobById(id);
+    Job job=jobDao.getJob(id);
     return new ResponseEntity<Job>(job,HttpStatus.OK);
 }
 }
