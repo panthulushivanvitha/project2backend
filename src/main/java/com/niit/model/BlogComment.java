@@ -22,14 +22,21 @@ public class BlogComment
 	
 private int id;
 	@ManyToOne
-	@JoinColumn(name="username")
+	private BlogPost blogPost;
+	@ManyToOne
+	
 private User commentedBy;
 private Date commentedOn;
-@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-@JoinColumn(name="blogpost_id")
-private BlogPost blogPost;
-private String body;
 
+
+private String commentTxt;
+
+public String getCommentTxt() {
+	return commentTxt;
+}
+public void setCommentTxt(String commentTxt) {
+	this.commentTxt = commentTxt;
+}
 public int getId() {
 	return id;
 }
@@ -54,11 +61,6 @@ public BlogPost getBlogPost() {
 public void setBlogPost(BlogPost blogPost) {
 	this.blogPost = blogPost;
 }
-public String getBody() {
-	return body;
-}
-public void setBody(String body) {
-	this.body = body;
-}
+
 
 }
