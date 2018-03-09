@@ -1,6 +1,5 @@
 package com.niit.dao;
 
-
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,64 +10,60 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.niit.model.BlogComment;
 import com.niit.model.BlogPost;
-
+import com.niit.model.Notification;
 
 @Repository
 @Transactional
-public class BlogPostDaoImpl implements BlogPostDao
-{
+public class BlogPostDaoImpl implements BlogPostDao {
+	
+public BlogPostDaoImpl(){
+		
+		System.out.println("BlogPostDAOImpl");
+	}
+	
 	@Autowired
 	private SessionFactory sessionFactory;
-	public void saveBlogPost(BlogPost blogPost) 
-	{
+
+	public void addBlogPost(BlogPost blogPost) {
 		Session session=sessionFactory.getCurrentSession();
 		session.save(blogPost);
-		
+
 	}
-	
-	public List<BlogPost> getAllBlogs(int approved) 
-	{
-		Session session=sessionFactory.openSession();
+
+	public List<BlogPost> listOfBlogs(int approved) {
+		Session session=sessionFactory.getCurrentSession();
 		Query query=session.createQuery("from BlogPost where approved="+approved);
-		List<BlogPost> blogPosts=query.list();
-		session.close();
-		return blogPosts;
+		List<BlogPost> blogs=query.list();
+		return blogs;
 	}
-	
-	public BlogPost getBlogById(int id) 
-	{
-		Session session=sessionFactory.openSession();
+
+	public BlogPost getBlog(int id) {
+		Session session=sessionFactory.getCurrentSession();
 		BlogPost blogPost=(BlogPost)session.get(BlogPost.class, id);
-		session.close();
 		return blogPost;
 	}
 
-	public void updateBlogPost(BlogPost blogPost) {
-		
-		Session session=sessionFactory.openSession();
-		session.update(blogPost);
-		session.flush();
-		session.close();
+    public void approve(BlogPost blog) {
+		Session session=sessionFactory.getCurrentSession();
+		blog.setApproved(true);
+		session.update(blog);
+		Notification notification=new Notification();
+		notification.setBlogTitle(blog.getBlogTitle());
+		notification.setApprovalStatus("Approved");
+		notification.setEmail(blog.getPostedBy().getEmail());
+		session.save(notification);
 	}
-	
-public void addBlogComment(BlogComment blogComment) {
-		
-		Session session=sessionFactory.openSession();
-		session.save(blogComment);
-		session.flush();
-		session.close();
-	}
-public List<BlogComment> getBlogComments(int blogId) {
-    Session session=sessionFactory.openSession();
-  Query query=session.createQuery("from BlogComment where blogPost.id="+blogId);
-   
-    List<BlogComment> blogComments=query.list();
-    System.out.println("blogComments");
-    session.close();
-    return blogComments;
     
-}
+	public void reject(BlogPost blog,String rejectionReason) {
+		Session session=sessionFactory.getCurrentSession();
+		Notification notification=new Notification();
+		notification.setBlogTitle(blog.getBlogTitle());
+		notification.setApprovalStatus("Rejected");
+		notification.setEmail(blog.getPostedBy().getEmail());
+		notification.setRejectionReason(rejectionReason);
+		session.save(notification);
+		session.delete(blog);
+	}
 
 }

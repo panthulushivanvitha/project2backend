@@ -1,79 +1,78 @@
 package com.niit.model;
 
 import java.util.Date;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name="Blogpost")
-public class BlogPost
-{
+public class BlogPost {
+	
+	public BlogPost(){
+		System.out.println("BlogPost.");
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	private String title;
+	@Column(nullable=false)
+	private String blogTitle;
 	@Lob
-	private String description;
-	@ManyToOne
-	@JoinColumn(name="username")
-	private User createdBy;
+	@Column(nullable=false)
+	private String blogContent;
 	private Date postedOn;
+	@ManyToOne
+	private User postedBy;
+	private int likes;
 	private boolean approved;
-	
-	public int getId()
-	{
+	public int getId() {
 		return id;
 	}
-	public void setId(int id)
-	{
+	public void setId(int id) {
 		this.id = id;
 	}
-	public String getTitle() 
-	{
-		return title;
+	public String getBlogTitle() {
+		return blogTitle;
 	}
-	public void setTitle(String title)
-	{
-		this.title = title;
+	public void setBlogTitle(String blogTitle) {
+		this.blogTitle = blogTitle;
 	}
-	public String getDescription() 
-	{
-		return description;
+	public String getBlogContent() {
+		return blogContent;
 	}
-	public void setDescription(String description)
-	{
-		this.description = description;
+	public void setBlogContent(String blogContent) {
+		this.blogContent = blogContent;
 	}
-	public User getCreatedBy() 
-	{
-		return createdBy;
-	}
-	public void setCreatedBy(User createdBy) 
-	{
-		this.createdBy = createdBy;
-	}
-	public Date getPostedOn()
-	{
+	public Date getPostedOn() {
 		return postedOn;
 	}
-	public void setPostedOn(Date postedOn) 
-	{
+	public void setPostedOn(Date postedOn) {
 		this.postedOn = postedOn;
 	}
-	public boolean isApproved()
-	{
+	public User getPostedBy() {
+		return postedBy;
+	}
+	public void setPostedBy(User postedBy) {
+		this.postedBy = postedBy;
+	}
+	public int getLikes() {
+		return likes;
+	}
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+	public boolean isApproved() {
 		return approved;
 	}
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+
 
 }
