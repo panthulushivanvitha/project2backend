@@ -13,17 +13,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 @ComponentScan(basePackages="com.niit")
 public class WebAppConfig extends WebMvcConfigurerAdapter{
+	public WebAppConfig(){
+		System.out.println("WebAppConfig is instantiated");
+	}
 
-	public void addResourceHandlers(ResourceHandlerRegistry registry)
+	/*public void addResourceHandlers(ResourceHandlerRegistry registry)
 	{
 	registry.addResourceHandler("/resources/**").addResourceLocations("/WEB-INF/resources/");
-	}
+	}*/
 	
 	@Bean(name = "multipartResolver")
-	public CommonsMultipartResolver getCommonsMultipartResolver() {
-		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-		multipartResolver.setMaxUploadSize(20971520); // 20MB
-		multipartResolver.setMaxInMemorySize(1048576);	// 1MB
-		return multipartResolver;
+	public CommonsMultipartResolver commonsMultipartResolver() {
+		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+		commonsMultipartResolver.setMaxUploadSize(20971520); // 20MB
+		commonsMultipartResolver.setMaxInMemorySize(1048576);	// 1MB
+		return commonsMultipartResolver;
 	}
 }

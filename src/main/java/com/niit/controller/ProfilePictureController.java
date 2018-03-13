@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.niit.dao.ProfilePictureDao;
+import com.niit.model.ErrorClass;
 import com.niit.model.ProfilePicture;
 import com.niit.model.User;
 
@@ -25,31 +26,31 @@ public class ProfilePictureController {
 	private ProfilePictureDao profilePictureDao;
 		@RequestMapping(value="/uploadprofilepic",method=RequestMethod.POST)
 	public ResponseEntity<?> uploadProfilePicture(@RequestParam CommonsMultipartFile image,HttpSession session){
-		User user=(User)session.getAttribute("user");
-		if(user==null)		{
-			   Error error=new Error("UnAuthorized user");
-				return new ResponseEntity<Error>(error,HttpStatus.UNAUTHORIZED);
+		String email=(String)session.getAttribute("loginId");
+		if(email==null)		{
+			   ErrorClass error=new ErrorClass(6,"UnAuthorized access");
+				return new ResponseEntity<ErrorClass>(error,HttpStatus.UNAUTHORIZED);
 		} 
 		ProfilePicture profilePicture=new ProfilePicture();
-		profilePicture.setEmail(user.getEmail());
+		profilePicture.setEmail(email);
 		profilePicture.setImage(image.getBytes());
-		profilePictureDao.saveProfilePicture(profilePicture);
-		return new ResponseEntity<User>(user,HttpStatus.OK);
+		profilePictureDao.uploadProfilePicture(profilePicture);
+		return new ResponseEntity<ProfilePicture>(profilePicture,HttpStatus.OK);
 	}
 		
 		//http://localhost:8080/backend_project2/getimage/admin
 		@RequestMapping(value="/getimage/{email}", method=RequestMethod.GET)
-		public @ResponseBody byte[] getProfilePic(@PathVariable String email,HttpSession session){
-			User user=(User)session.getAttribute("user");
-			if(user==null)
+		public @ResponseBody byte[] getImage(@PathVariable String email,HttpSession session){
+			String auth=(String)session.getAttribute("loginId");
+			if(auth==null)
 				return null;
 			else
 			{
-				ProfilePicture profilePic=profilePictureDao.getProfilePicture(email);
-				if(profilePic==null)
+				ProfilePicture profilePicture=profilePictureDao.getImage(email);
+				if(profilePicture==null)
 					return null;
 				else
-					return profilePic.getImage();
+					return profilePicture.getImage();
 			}
 			
 	}
