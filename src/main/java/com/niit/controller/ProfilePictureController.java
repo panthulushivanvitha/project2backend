@@ -39,20 +39,23 @@ public class ProfilePictureController {
 	}
 		
 		//http://localhost:8080/backend_project2/getimage/admin
-		@RequestMapping(value="/getimage/{email}", method=RequestMethod.GET)
+		@RequestMapping(value="/getimage/{email:.+}", method=RequestMethod.GET)
 		public @ResponseBody byte[] getImage(@PathVariable String email,HttpSession session){
 			String auth=(String)session.getAttribute("loginId");
-			if(auth==null)
+			if(auth==null){
 				return null;
-			else
-			{
-				ProfilePicture profilePicture=profilePictureDao.getImage(email);
-				if(profilePicture==null)
+			}
+			
+			ProfilePicture profilePicture=profilePictureDao.getImage(email);
+				if(profilePicture==null){
 					return null;
+				}					
+		
+			
 				else
 					return profilePicture.getImage();
 			}
 			
 	}
-	}
+	
 

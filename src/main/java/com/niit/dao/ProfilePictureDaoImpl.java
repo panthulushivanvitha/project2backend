@@ -9,14 +9,15 @@ import org.springframework.stereotype.Repository;
 
 import com.niit.model.ProfilePicture;
 @Repository
-
+@Transactional
 public class ProfilePictureDaoImpl implements ProfilePictureDao{
 	@Autowired
 	private SessionFactory sessionFactory;
-	@Transactional
+	
 	public void uploadProfilePicture(ProfilePicture profilePicture) {
 		Session session=sessionFactory.getCurrentSession();
 		session.saveOrUpdate(profilePicture);
+		
 		
 		
 	}
