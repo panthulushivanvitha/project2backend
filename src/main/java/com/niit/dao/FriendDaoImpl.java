@@ -4,12 +4,14 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.niit.model.Friend;
 import com.niit.model.User;
 @Repository
 @Transactional
@@ -39,30 +41,26 @@ public class FriendDaoImpl implements FriendDao {
 		
 	}
 	
-	/*public void friendRequest(String fromUsername, String toUsername){
-		Session session=sessionFactory.openSession();
-		Friend friend=new Friend();
-		friend.setFromId(fromUsername);
-		friend.setToId(toUsername);
-		friend.setStatus('p');
+	public void addFriend(Friend friend){
+		Session session=sessionFactory.getCurrentSession();
+		
 		session.save(friend);
-		session.flush();
-		session.close();
+		
 	}
 
 	
-	public List<Friend> listOfPendingRequest(String toUsername)
+	public List<Friend> pendingRequests(String toIdemail)
 	{
-		Session session=sessionFactory.openSession();
-		Query query=session.createQuery("from Friend where toId=? and status=?");
-		query.setString(0, toUsername);
-		query.setCharacter(1, 'p');
+		Session session=sessionFactory.getCurrentSession();
+		Query query=session.createQuery("from Friend where status=? and toId.email=?");
+		query.setString(1, toIdemail);
+		query.setCharacter(0, 'p');
 		List<Friend> pendingRequests=query.list();
-		session.close();
+		
 		return pendingRequests;
 	}
 
- public void updatePendingRequest(String fromId, String toId, char status) {
+ /*public void updatePendingRequest(String fromId, String toId, char status) {
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery("update Friend set status=? where fromId = ? and toId=? ");
 		query.setCharacter(0, status);
