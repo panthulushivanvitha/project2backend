@@ -60,6 +60,35 @@ public class FriendDaoImpl implements FriendDao {
 		return pendingRequests;
 	}
 
+	public void acceptRequest(Friend request) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		request.setStatus('A');
+		session.update(request);
+	}
+	
+	public void deleteRequest(Friend request) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+	
+		session.delete(request);
+	}
+	public List<Friend> listOfFriends(String email) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		Query query1=session.createQuery("select  f.toId from Friend f where f.fromId.email=? and f.status=?");
+		query1.setString(0, email);
+		query1.setCharacter(1, 'A');
+		List<Friend> friendsList1=query1.list();
+		Query query2=session.createQuery("select f.fromId from Friend f where f.toId.email=? and f.status=?");
+		query2.setString(0, email);
+		query2.setCharacter(1, 'A');
+		List<Friend> friendsList2=query2.list();
+		friendsList1.addAll(friendsList2);
+		return friendsList1;
+	}
+	}
+	
  /*public void updatePendingRequest(String fromId, String toId, char status) {
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery("update Friend set status=? where fromId = ? and toId=? ");
@@ -83,4 +112,3 @@ public class FriendDaoImpl implements FriendDao {
 		return friends;
 	}
 */	
-}
