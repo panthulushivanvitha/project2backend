@@ -9,9 +9,7 @@ public interface FriendDao {
 
 	List<User> suggestedUsers(String email);
 	
-	/*
-	void updatePendingRequest(String fromId,String toId,char status);
-	List<Friend> listOfFriends(String Username);*/
+	
 	void addFriend(Friend friend);
 
 	List<Friend> pendingRequests(String email);
@@ -19,4 +17,5 @@ public interface FriendDao {
 	void acceptRequest(Friend request);
 
 	void deleteRequest(Friend request);
+	public List<Friend> listOfFriends(String email);
 }

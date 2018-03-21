@@ -89,26 +89,4 @@ public class FriendDaoImpl implements FriendDao {
 	}
 	}
 	
- /*public void updatePendingRequest(String fromId, String toId, char status) {
-		Session session = sessionFactory.openSession();
-		Query query = session.createQuery("update Friend set status=? where fromId = ? and toId=? ");
-		query.setCharacter(0, status);
-		query.setString(1, fromId);
-		query.setString(2, toId);
-		query.executeUpdate();
-		session.flush();
-		session.close();
-	}
-    
-	public List<Friend> listOfFriends(String Username)
-	{
-		Session session=sessionFactory.openSession();
-		Query query=session.createQuery("from Friend where(fromId=? or toId=?) and status=?");
-		query.setString(0, Username);
-		query.setString(1, Username);
-		query.setCharacter(2, 'A');
-		List<Friend> friends=query.list();
-		session.close();
-		return friends;
-	}
-*/	
+ 
