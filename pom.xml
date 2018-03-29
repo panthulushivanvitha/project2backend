@@ -30,6 +30,12 @@
     <artifactId>commons-dbcp</artifactId>
     <version>1.4</version>
 </dependency>
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.1.7</version>
+</dependency>
+
 <!--  
 <dependency>
     <groupId>dom4j</groupId>
@@ -217,10 +223,25 @@
 			<version>3.1.0</version>
 		</dependency>
 
+<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>4.0.0.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>4.0.0.RELEASE</version>
+		</dependency>
 
 
 
-    
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
   </dependencies>
   <build>
     <finalName>Backend2</finalName>

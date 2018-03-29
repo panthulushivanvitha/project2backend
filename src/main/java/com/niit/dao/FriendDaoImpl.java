@@ -87,6 +87,8 @@ public class FriendDaoImpl implements FriendDao {
 		friendsList1.addAll(friendsList2);
 		return friendsList1;
 	}
+	
+
 	}
 	
  

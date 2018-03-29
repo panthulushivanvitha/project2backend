@@ -141,4 +141,5 @@ public ResponseEntity<?> getAllFriends(HttpSession session){
 	return new ResponseEntity<List<Friend>>(friends,HttpStatus.OK);
 }
 
+	
 }

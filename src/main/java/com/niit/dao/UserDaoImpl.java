@@ -1,5 +1,7 @@
 package com.niit.dao;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.hibernate.Query;
@@ -53,10 +55,20 @@ private SessionFactory sessionFactory;
 
 	public void updateUser(User user) {
 		// TODO Auto-generated method stub
+        Session session=sessionFactory.getCurrentSession();
+        session.update(user);
+	}
+
+	public List<User> searchUser(String name) {
+		// TODO Auto-generated method stub
+		System.out.println("name");
 		Session session=sessionFactory.getCurrentSession();
-		session.update(user);
-		
-		
+		Query query=session.createQuery("from User u where u.firstName like ? or u.lastName like ? or u.email like ?");
+		query.setString(0,"%" + name + "%");
+		query.setString(1,"%" + name + "%");
+		query.setString(2,"%" + name + "%");
+		List<User> users=query.list();
+		return users;
 	}
 	
 }

@@ -18,4 +18,6 @@ public interface FriendDao {
 
 	void deleteRequest(Friend request);
 	public List<Friend> listOfFriends(String email);
+
+	
 }
